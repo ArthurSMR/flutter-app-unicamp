@@ -2,23 +2,8 @@ import 'package:atividade01/arthur.dart';
 import 'package:atividade01/form.dart';
 import 'package:atividade01/gabriel.dart';
 import 'package:flutter/material.dart';
-import 'dart:async';
-import 'package:path/path.dart';
-import 'package:sqflite/sqflite.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
-  final Future<Database> database = openDatabase(
-    join(await getDatabasesPath(), 'users_database.db'),
-    onCreate: (db, version) {
-      return db.execute(
-        "CREATE TABLE users(id INTEGER PRIMARY KEY, username TEXT)",
-      );
-    },
-    version: 1,
-  );
-
   runApp(InitialForm());
 }
 
@@ -48,15 +33,15 @@ class InitialFormState extends State<InitialForm> {
           items: [
             BottomNavigationBarItem(
               icon: Icon(Icons.person),
-              title: Text("Arthur"),
+              label: "Arthur",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_outline),
-              title: Text("Gabriel"),
+              label: "Gabriel",
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.access_alarms),
-              title: Text("Formulário"),
+              label: "Formulário",
             ),
           ],
           fixedColor: Colors.red,

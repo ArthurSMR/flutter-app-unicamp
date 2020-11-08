@@ -1,18 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:sqflite/sqlite_api.dart';
+import 'database/database_helper.dart';
 import 'user.dart';
-import 'dart:async';
 
 class FormView extends StatefulWidget {
-  final User user = new User();
   @override
-  _FormViewState createState() => _FormViewState(user);
+  _FormViewState createState() => _FormViewState();
 }
 
 class _FormViewState extends State<FormView> {
   GlobalKey<FormState> formKey = new GlobalKey<FormState>();
-  final User user;
-  _FormViewState(this.user);
+  final User user = new User("", "", "", "", 0);
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -75,10 +73,14 @@ class _FormViewState extends State<FormView> {
                       Checkbox(
                         onChanged: (bool value) {
                           setState(() {
-                            user.newsToEmail = value;
+                            if (value) {
+                              user.newsToEmail = 1;
+                            } else {
+                              user.newsToEmail = 0;
+                            }
                           });
                         },
-                        value: user.newsToEmail,
+                        value: (user.newsToEmail == 1 ? true : false),
                       ),
                       Text("Quero receber novas noticias no meu email")
                     ],
@@ -122,8 +124,8 @@ class _FormViewState extends State<FormView> {
                     onPressed: () {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
-                        // user.saveUser(user, this.widget.database);
-                        user.printValues();
+                        print("Tudo ok!");
+                        _saveOnDatabase();
                       }
                     },
                   )
@@ -134,5 +136,15 @@ class _FormViewState extends State<FormView> {
         ),
       ),
     );
+  }
+
+  _saveOnDatabase() async {
+    await DatabaseHelper.helper.insertUser(user);
+
+    DatabaseHelper.helper.getUserMapList().then((valor) {
+      valor.forEach((user) {
+        print(user);
+      });
+    });
   }
 }
