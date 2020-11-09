@@ -1,36 +1,41 @@
-import 'package:flutter/foundation.dart';
-import 'package:sqflite/sqlite_api.dart';
-import 'database/user_database.dart';
-import 'dart:async';
-
 class User {
-  String id = "1";
-  String username;
-  String password;
-  String email;
-  String gender;
-  bool newsToEmail = false;
+  String _username;
+  String _password;
+  String _email;
+  String _gender;
+  int _newsToEmail = 0;
 
-  void printValues() {
-    print("O username é: $username");
-    print("Senha: $password");
-    print("Email: $email");
-    print("Genêro: $gender");
-    print("Quero receber emails? $newsToEmail");
+  User(this._username, this._password, this._email, this._gender,
+      this._newsToEmail);
+
+  User.fromMap(map) {
+    this._username = map["username"];
+    this._password = map["password"];
+    this._email = map["email"];
+    this._gender = map["gender"];
+    this._newsToEmail = map["newsToEmail"];
   }
+
+  String get username => _username;
+  String get password => _password;
+  String get email => _email;
+  String get gender => _gender;
+  int get newsToEmail => _newsToEmail;
+
+  set username(String newUsername) => this._username = newUsername;
+  set password(String newPassword) => this._password = newPassword;
+  set email(String newEmail) => this._email = newEmail;
+  set gender(String newGender) => this._gender = newGender;
+  set newsToEmail(int newOption) => this._newsToEmail = newOption;
 
   Map<String, dynamic> toMap() {
-    return {
-      'id': id,
-      'name': username,
-    };
+    var map = Map<String, dynamic>();
+    map["username"] = _username;
+    map["password"] = _password;
+    map["email"] = _email;
+    map["gender"] = _gender;
+    map["newsToEmail"] = _newsToEmail;
+
+    return map;
   }
-
-  void saveUser(User user, Future<Database> database) {
-    UserDatabase userDB = UserDatabase();
-
-    userDB.insertUser(user, database);
-  }
-
-  void getUser() {}
 }
