@@ -2,6 +2,7 @@ import 'package:atividade01/arthur.dart';
 import 'package:atividade01/form.dart';
 import 'package:atividade01/gabriel.dart';
 import 'package:flutter/material.dart';
+import 'database/database_helper.dart';
 
 void main() async {
   runApp(InitialForm());
@@ -19,6 +20,7 @@ class InitialFormState extends State<InitialForm> {
   @override
   void initState() {
     super.initState();
+    DatabaseHelper.helper.printValues();
     currentPage = 0;
     pages = [ArthurGreeting(), GabrielGreeting(), FormView()];
   }

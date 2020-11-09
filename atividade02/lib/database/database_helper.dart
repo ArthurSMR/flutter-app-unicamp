@@ -43,21 +43,23 @@ class DatabaseHelper {
     return result;
   }
 
+  void printValues() async {
+    if (await getCount() == 0) {
+      print("Banco de dados vazio!");
+    } else {
+      print("Usuários cadastrados: ");
+      DatabaseHelper.helper.getUserMapList().then((result) {
+        result.forEach((user) {
+          print(user);
+        });
+      });
+    }
+  }
+
   getUserMapList() async {
     Database db = await this.database;
     var result = await db.rawQuery("SELECT * FROM $userTable");
     return result;
-  }
-
-  getUserList() async {
-    var userMapList = await getUserMapList();
-    int count = userMapList.lenght;
-    List<User> userList = List<User>();
-
-    for (int i = 0; i < count; i++) {
-      userList.add(User.fromMap(userMapList[i]));
-    }
-    return userList;
   }
 
   getCount() async {

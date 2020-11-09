@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'database/database_helper.dart';
 import 'user.dart';
 
 class FormView extends StatefulWidget {
@@ -124,8 +123,7 @@ class _FormViewState extends State<FormView> {
                     onPressed: () {
                       if (formKey.currentState.validate()) {
                         formKey.currentState.save();
-                        print("Tudo ok!");
-                        _saveOnDatabase();
+                        user.saveOnDatabase(user);
                       }
                     },
                   )
@@ -136,15 +134,5 @@ class _FormViewState extends State<FormView> {
         ),
       ),
     );
-  }
-
-  _saveOnDatabase() async {
-    await DatabaseHelper.helper.insertUser(user);
-
-    DatabaseHelper.helper.getUserMapList().then((valor) {
-      valor.forEach((user) {
-        print(user);
-      });
-    });
   }
 }

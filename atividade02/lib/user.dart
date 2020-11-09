@@ -1,3 +1,5 @@
+import 'database/database_helper.dart';
+
 class User {
   String _username;
   String _password;
@@ -16,6 +18,17 @@ class User {
     this._newsToEmail = map["newsToEmail"];
   }
 
+  Map<String, dynamic> toMap() {
+    var map = Map<String, dynamic>();
+    map["username"] = _username;
+    map["password"] = _password;
+    map["email"] = _email;
+    map["gender"] = _gender;
+    map["newsToEmail"] = _newsToEmail;
+
+    return map;
+  }
+
   String get username => _username;
   String get password => _password;
   String get email => _email;
@@ -28,14 +41,8 @@ class User {
   set gender(String newGender) => this._gender = newGender;
   set newsToEmail(int newOption) => this._newsToEmail = newOption;
 
-  Map<String, dynamic> toMap() {
-    var map = Map<String, dynamic>();
-    map["username"] = _username;
-    map["password"] = _password;
-    map["email"] = _email;
-    map["gender"] = _gender;
-    map["newsToEmail"] = _newsToEmail;
-
-    return map;
+  saveOnDatabase(User user) async {
+    await DatabaseHelper.helper.insertUser(user);
+    DatabaseHelper.helper.printValues();
   }
 }
